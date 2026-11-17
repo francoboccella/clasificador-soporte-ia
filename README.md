@@ -45,6 +45,10 @@ Este proyecto propone automatizar esas tareas para facilitar la gestión y prior
 
 **Gmail → OpenAI → JSON → Google Sheets → Slack**
 
+### Escenario desarrollado en Make
+
+![Escenario de automatización en Make](escenario-make.png)
+
 La solución fue desarrollada mediante un escenario de Make que integra los diferentes servicios.
 
 ## Archivos del proyecto
