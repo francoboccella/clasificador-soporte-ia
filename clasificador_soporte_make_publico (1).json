@@ -1,0 +1,1048 @@
+{
+  "name": "CLASIFICADOR diplo utn",
+  "flow": [
+    {
+      "id": 5,
+      "module": "google-email:triggerWatchNewEmails",
+      "version": 4,
+      "parameters": {
+        "from": "",
+        "size": {
+          "unit": "M",
+          "amount": null,
+          "criteria": "larger"
+        },
+        "limit": 1,
+        "folder": "INBOX",
+        "format": "full",
+        "subject": "",
+        "criteria": "all",
+        "markSeen": false,
+        "filterType": "simpleSearch",
+        "excludeWords": "",
+        "includeWords": "",
+        "hasAttachment": false
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0
+        },
+        "restore": {
+          "parameters": {
+            "size": {
+              "nested": {
+                "unit": {
+                  "label": "MB (megabytes)"
+                },
+                "criteria": {
+                  "label": "Greater than"
+                }
+              }
+            },
+            "folder": {
+              "label": "Inbox"
+            },
+            "format": {
+              "label": "Full content"
+            },
+            "criteria": {
+              "label": "All messages"
+            },
+            "filterType": {
+              "label": "Simple filter"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "__IMTCONN__",
+            "type": "account:google-email",
+            "label": "Configurar conexión propia",
+            "required": true
+          },
+          {
+            "name": "filterType",
+            "type": "select",
+            "label": "Filter type",
+            "required": true,
+            "validate": {
+              "enum": [
+                "simpleSearch",
+                "gmailSearch"
+              ]
+            }
+          },
+          {
+            "name": "format",
+            "type": "select",
+            "label": "Content format",
+            "required": true,
+            "validate": {
+              "enum": [
+                "full",
+                "raw",
+                "metadata",
+                "minimal"
+              ]
+            }
+          },
+          {
+            "name": "folder",
+            "type": "select",
+            "label": "Folder",
+            "required": true
+          },
+          {
+            "name": "labelIds",
+            "type": "select",
+            "label": "Label"
+          },
+          {
+            "name": "criteria",
+            "type": "select",
+            "label": "Criteria",
+            "required": true,
+            "validate": {
+              "enum": [
+                "all",
+                "is:read",
+                "is:unread"
+              ]
+            }
+          },
+          {
+            "name": "markSeen",
+            "type": "boolean",
+            "label": "Mark email message(s) as read when fetched"
+          },
+          {
+            "name": "limit",
+            "type": "uinteger",
+            "label": "Limit",
+            "required": true,
+            "validate": {
+              "max": 500
+            }
+          },
+          {
+            "name": "from",
+            "type": "email",
+            "label": "Sender email address"
+          },
+          {
+            "name": "subject",
+            "type": "text",
+            "label": "Subject"
+          },
+          {
+            "name": "includeWords",
+            "type": "text",
+            "label": "Has the words"
+          },
+          {
+            "name": "excludeWords",
+            "type": "text",
+            "label": "Doesn't have"
+          },
+          {
+            "name": "size",
+            "spec": [
+              {
+                "name": "criteria",
+                "type": "select",
+                "label": "Criteria",
+                "validate": {
+                  "enum": [
+                    "larger",
+                    "smaller"
+                  ]
+                }
+              },
+              {
+                "name": "amount",
+                "type": "integer",
+                "label": "Size",
+                "validate": {
+                  "min": 0
+                }
+              },
+              {
+                "name": "unit",
+                "type": "select",
+                "label": "Size unit",
+                "validate": {
+                  "enum": [
+                    "M",
+                    "K",
+                    "bytes"
+                  ]
+                }
+              }
+            ],
+            "type": "collection",
+            "label": "Email size"
+          },
+          {
+            "name": "hasAttachment",
+            "type": "boolean",
+            "label": "Only emails with attachments/media",
+            "required": true
+          }
+        ],
+        "interface": [
+          {
+            "name": "id",
+            "type": "text",
+            "label": "Message ID"
+          },
+          {
+            "name": "threadId",
+            "type": "text",
+            "label": "Thread ID"
+          },
+          {
+            "name": "internalDate",
+            "type": "date",
+            "label": "Date"
+          },
+          {
+            "name": "subject",
+            "type": "text",
+            "label": "Subject",
+            "condition": true
+          },
+          {
+            "name": "fromName",
+            "type": "text",
+            "label": "From (name)",
+            "condition": true
+          },
+          {
+            "name": "fromEmail",
+            "type": "text",
+            "label": "From (email)",
+            "condition": true
+          },
+          {
+            "name": "to",
+            "spec": {
+              "spec": [
+                {
+                  "name": "name",
+                  "type": "text",
+                  "label": "Name"
+                },
+                {
+                  "name": "email",
+                  "type": "text",
+                  "label": "Email"
+                }
+              ],
+              "type": "collection"
+            },
+            "type": "array",
+            "label": "To",
+            "condition": true
+          },
+          {
+            "name": "cc",
+            "spec": [
+              {
+                "name": "email",
+                "type": "email",
+                "label": "Email"
+              },
+              {
+                "name": "name",
+                "type": "text",
+                "label": "Name"
+              }
+            ],
+            "type": "array",
+            "label": "CC",
+            "condition": true
+          },
+          {
+            "name": "bcc",
+            "spec": [
+              {
+                "name": "email",
+                "type": "email",
+                "label": "Email"
+              },
+              {
+                "name": "name",
+                "type": "text",
+                "label": "Name"
+              }
+            ],
+            "type": "array",
+            "label": "BCC",
+            "condition": true
+          },
+          {
+            "name": "snippet",
+            "type": "text",
+            "label": "Snippet"
+          },
+          {
+            "name": "fullTextBody",
+            "type": "text",
+            "label": "Full text body",
+            "condition": true
+          },
+          {
+            "name": "htmlBody",
+            "type": "text",
+            "label": "HTML body",
+            "condition": true
+          },
+          {
+            "name": "hasAttachment",
+            "type": "boolean",
+            "label": "Has attachment",
+            "condition": true
+          },
+          {
+            "name": "hasMedia",
+            "type": "boolean",
+            "label": "Has media",
+            "condition": true
+          },
+          {
+            "name": "sysFolders",
+            "spec": [
+              {
+                "name": "id",
+                "type": "text",
+                "label": "System folder ID"
+              },
+              {
+                "name": "name",
+                "type": "text",
+                "label": "System folder name"
+              }
+            ],
+            "type": "array",
+            "label": "System folders"
+          },
+          {
+            "name": "categoryFolders",
+            "spec": [
+              {
+                "name": "id",
+                "type": "text",
+                "label": "Category folder ID"
+              },
+              {
+                "name": "name",
+                "type": "text",
+                "label": "Category folder name"
+              }
+            ],
+            "type": "array",
+            "label": "Category folders"
+          },
+          {
+            "name": "userLabelFolders",
+            "spec": [
+              {
+                "name": "id",
+                "type": "text",
+                "label": "User label folder ID"
+              },
+              {
+                "name": "name",
+                "type": "text",
+                "label": "User label folder name"
+              }
+            ],
+            "type": "array",
+            "label": "User label folders"
+          },
+          {
+            "name": "labelIds",
+            "spec": {
+              "type": "text"
+            },
+            "type": "array",
+            "label": "Message folder IDs"
+          },
+          {
+            "name": "headers",
+            "spec": [
+              {
+                "name": "Delivered-To",
+                "type": "text",
+                "label": "Delivered-To"
+              },
+              {
+                "name": "Received",
+                "type": "text",
+                "label": "Received"
+              },
+              {
+                "name": "Date",
+                "type": "text",
+                "label": "Date (header)"
+              },
+              {
+                "name": "X-Original-Sender",
+                "type": "text"
+              },
+              {
+                "name": "Reply-To",
+                "type": "text"
+              },
+              {
+                "name": "Subject",
+                "type": "text",
+                "label": "Subject"
+              },
+              {
+                "name": "From",
+                "type": "text",
+                "label": "From"
+              },
+              {
+                "name": "To",
+                "type": "text",
+                "label": "To"
+              },
+              {
+                "name": "Message-ID",
+                "type": "text",
+                "label": "Message-ID"
+              },
+              {
+                "name": "In-Reply-To",
+                "type": "text",
+                "label": "In-Reply-To"
+              }
+            ],
+            "type": "collection",
+            "label": "Headers",
+            "condition": true
+          },
+          {
+            "name": "sizeEstimate",
+            "type": "number",
+            "label": "Size estimate"
+          },
+          {
+            "name": "historyId",
+            "type": "text",
+            "label": "History ID"
+          }
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "module": "openai-gpt-3:askAnything",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "model": "gpt-5-nano",
+        "textPrompt": "Actuá como clasificador de correos del área de soporte de NovaWeb.\r\n\r\nTu tarea es analizar el correo recibido y devolver una respuesta estructurada en formato JSON.\r\n\r\nPrimero clasificá el correo en uno de estos tipos:\r\n- Solicitud de soporte\r\n- Factura\r\n- Spam\r\n- Otro\r\n\r\nSi el correo NO es una solicitud de soporte:\r\n- indicá el tipo correspondiente;\r\n- usá \"prioridad\": \"No aplica\";\r\n- generá un resumen breve;\r\n- no inventes información.\r\n\r\nSi el correo SÍ es una solicitud de soporte, clasificá su prioridad usando exclusivamente estos criterios:\r\n\r\nAlta: el sitio está caído, no se puede comprar, no se puede acceder o existe una falla que bloquea una operación importante.\r\n\r\nMedia: existe una falla que afecta una funcionalidad, pero el sitio sigue operativo y el cliente puede continuar trabajando.\r\n\r\nBaja: cambios de contenido, imágenes, textos, productos o solicitudes sin impacto inmediato en la operación.\r\n\r\nSi no hay información suficiente para determinar la prioridad, usá:\r\n\"prioridad\": \"Revisión manual\".\r\n\r\nTambién generá un resumen breve y claro del problema, sin agregar datos que no aparezcan en el correo.\r\n\r\nRespondé únicamente con JSON válido utilizando exactamente esta estructura:\r\n\r\n{\r\n  \"tipo\": \"Solicitud de soporte\",\r\n  \"prioridad\": \"Alta\",\r\n  \"resumen\": \"Resumen breve del problema.\"\r\n}\r\n\r\nNo agregues explicaciones antes ni después del JSON.\r\n\r\nCorreo a analizar:\r\n\r\nRemitente: {{5.fromName}} - {{5.fromEmail}}\r\nAsunto: {{5.subject}}\r\nContenido: {{5.fullTextBody}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 300,
+          "y": 0
+        },
+        "restore": {
+          "expect": {
+            "model": {
+              "label": "GPT-5 nanoThe most cost-effective option for casual conversation and straightforward, simple fact-retrieval"
+            }
+          }
+        },
+        "expect": [
+          {
+            "name": "model",
+            "type": "select",
+            "label": "Model",
+            "required": true,
+            "validate": {
+              "enum": [
+                "gpt-5-nano",
+                "gpt-6.1-sol",
+                "gpt-6-sol",
+                "gpt-6-luna",
+                "gpt-6-astra",
+                "gpt-5.6-sol",
+                "gpt-5.6-terra",
+                "gpt-5.6-luna",
+                "gpt-5.5",
+                "gpt-5.4-nano",
+                "gpt-5.4-mini",
+                "gpt-5.4",
+                "gpt-5.2",
+                "gpt-5.1",
+                "gpt-5",
+                "gpt-5-mini"
+              ]
+            }
+          },
+          {
+            "name": "textPrompt",
+            "type": "text",
+            "label": "Text prompt",
+            "required": true
+          }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "module": "json:ParseJSON",
+      "version": 1,
+      "parameters": {
+        "type": 524980
+      },
+      "mapper": {
+        "json": "{{6.result}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 600,
+          "y": 0
+        },
+        "restore": {
+          "parameters": {
+            "type": {
+              "label": "clasificación correo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "type",
+            "type": "udt",
+            "label": "Data structure"
+          }
+        ],
+        "expect": [
+          {
+            "name": "json",
+            "type": "text",
+            "label": "JSON string",
+            "required": true
+          }
+        ],
+        "interface": [
+          {
+            "help": "",
+            "name": "tipo",
+            "type": "text",
+            "label": "Tipo"
+          },
+          {
+            "help": "",
+            "name": "prioridad",
+            "type": "text",
+            "label": "Prioridad"
+          },
+          {
+            "help": "",
+            "name": "resumen",
+            "type": "text",
+            "label": "Resumen"
+          }
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "module": "google-sheets:addRow",
+      "version": 2,
+      "parameters": {},
+      "filter": {
+        "name": "solicitudes de soporte",
+        "conditions": [
+          [
+            {
+              "a": "{{7.tipo}}",
+              "b": "Solicitud de soporte",
+              "o": "text:equal"
+            }
+          ]
+        ]
+      },
+      "mapper": {
+        "from": "drive",
+        "mode": "select",
+        "values": {
+          "0": "{{5.id}}",
+          "1": "{{5.internalDate}}",
+          "2": "{{5.fromName}}",
+          "3": "{{5.fromEmail}}",
+          "4": "{{5.subject}}",
+          "5": "{{7.resumen}}",
+          "6": "{{7.prioridad}}",
+          "7": "pendiente"
+        },
+        "sheetId": "solicitudes",
+        "spreadsheetId": "REEMPLAZAR_ID_PLANILLA",
+        "includesHeaders": true,
+        "insertDataOption": "INSERT_ROWS",
+        "useColumnHeaders": false,
+        "valueInputOption": "USER_ENTERED",
+        "insertUnformatted": false
+      },
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 0
+        },
+        "restore": {
+          "expect": {
+            "from": {
+              "label": "My Drive"
+            },
+            "mode": {
+              "label": "Search by path"
+            },
+            "sheetId": {
+              "label": "solicitudes"
+            },
+            "spreadsheetId": {
+              "path": [
+                "Planilla de ejemplo"
+              ]
+            },
+            "includesHeaders": {
+              "label": "Yes"
+            },
+            "insertDataOption": {
+              "mode": "chose",
+              "label": "Insert rows"
+            },
+            "useColumnHeaders": {
+              "label": "No"
+            },
+            "valueInputOption": {
+              "mode": "chose",
+              "label": "User entered"
+            },
+            "insertUnformatted": {
+              "mode": "chose"
+            }
+          },
+          "parameters": {}
+        },
+        "parameters": [
+          {
+            "name": "__IMTCONN__",
+            "type": "account:google",
+            "label": "Configurar conexión propia",
+            "required": true
+          }
+        ],
+        "expect": [
+          {
+            "name": "mode",
+            "type": "select",
+            "label": "Search Method",
+            "required": true,
+            "validate": {
+              "enum": [
+                "select",
+                "fromAll",
+                "map"
+              ]
+            }
+          },
+          {
+            "name": "insertUnformatted",
+            "type": "boolean",
+            "label": "Unformatted",
+            "required": true
+          },
+          {
+            "name": "valueInputOption",
+            "type": "select",
+            "label": "Value input option",
+            "required": true,
+            "validate": {
+              "enum": [
+                "USER_ENTERED",
+                "RAW"
+              ]
+            }
+          },
+          {
+            "name": "insertDataOption",
+            "type": "select",
+            "label": "Insert data option",
+            "validate": {
+              "enum": [
+                "INSERT_ROWS",
+                "OVERWRITE"
+              ]
+            }
+          },
+          {
+            "name": "from",
+            "type": "select",
+            "label": "Drive",
+            "required": true,
+            "validate": {
+              "enum": [
+                "drive",
+                "share",
+                "team"
+              ]
+            }
+          },
+          {
+            "name": "spreadsheetId",
+            "type": "file",
+            "label": "Spreadsheet Name",
+            "required": true
+          },
+          {
+            "name": "sheetId",
+            "type": "select",
+            "label": "Sheet Name",
+            "required": true
+          },
+          {
+            "name": "includesHeaders",
+            "type": "select",
+            "label": "Table contains headers",
+            "required": true,
+            "validate": {
+              "enum": [
+                true,
+                false
+              ]
+            }
+          },
+          {
+            "name": "useColumnHeaders",
+            "type": "select",
+            "label": "Use column headers as IDs of the columns",
+            "required": true,
+            "validate": {
+              "enum": [
+                true,
+                false
+              ]
+            }
+          },
+          {
+            "name": "values",
+            "spec": [
+              {
+                "name": "0",
+                "type": "text",
+                "label": "ID solicitud (A)"
+              },
+              {
+                "name": "1",
+                "type": "text",
+                "label": "fecha y hora (B)"
+              },
+              {
+                "name": "2",
+                "type": "text",
+                "label": "cliente/empresa (C)"
+              },
+              {
+                "name": "3",
+                "type": "text",
+                "label": "email (D)"
+              },
+              {
+                "name": "4",
+                "type": "text",
+                "label": "asunto (E)"
+              },
+              {
+                "name": "5",
+                "type": "text",
+                "label": "resumen del problema (F)"
+              },
+              {
+                "name": "6",
+                "type": "text",
+                "label": "prioridad (G)"
+              },
+              {
+                "name": "7",
+                "type": "text",
+                "label": "estado (H)"
+              },
+              {
+                "name": "8",
+                "type": "text",
+                "label": "responsable (I)"
+              },
+              {
+                "name": "9",
+                "type": "text",
+                "label": "solucion aplicada (J)"
+              },
+              {
+                "name": "10",
+                "type": "text",
+                "label": "(K)"
+              },
+              {
+                "name": "11",
+                "type": "text",
+                "label": "(L)"
+              },
+              {
+                "name": "12",
+                "type": "text",
+                "label": "(M)"
+              },
+              {
+                "name": "13",
+                "type": "text",
+                "label": "(N)"
+              },
+              {
+                "name": "14",
+                "type": "text",
+                "label": "(O)"
+              },
+              {
+                "name": "15",
+                "type": "text",
+                "label": "(P)"
+              },
+              {
+                "name": "16",
+                "type": "text",
+                "label": "(Q)"
+              },
+              {
+                "name": "17",
+                "type": "text",
+                "label": "(R)"
+              },
+              {
+                "name": "18",
+                "type": "text",
+                "label": "(S)"
+              },
+              {
+                "name": "19",
+                "type": "text",
+                "label": "(T)"
+              },
+              {
+                "name": "20",
+                "type": "text",
+                "label": "(U)"
+              },
+              {
+                "name": "21",
+                "type": "text",
+                "label": "(V)"
+              },
+              {
+                "name": "22",
+                "type": "text",
+                "label": "(W)"
+              },
+              {
+                "name": "23",
+                "type": "text",
+                "label": "(X)"
+              },
+              {
+                "name": "24",
+                "type": "text",
+                "label": "(Y)"
+              },
+              {
+                "name": "25",
+                "type": "text",
+                "label": "(Z)"
+              }
+            ],
+            "type": "collection",
+            "label": "Values in columns",
+            "metadata": [
+              [
+                [
+                  "ID solicitud",
+                  "fecha y hora",
+                  "cliente/empresa",
+                  "email",
+                  "asunto",
+                  "resumen del problema",
+                  "prioridad",
+                  "estado",
+                  "responsable",
+                  "solucion aplicada"
+                ]
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "module": "slack:CreateMessage",
+      "version": 4,
+      "parameters": {},
+      "mapper": {
+        "text": "\r\n{{switch(7.prioridad; \"Alta\"; \"\n🚨🚨 URGENTE 🚨🚨\"; \"Media\"; \"\n🔔 IMPORTANTE 🔔\"; \"Baja\"; \"\n🧩 REVISAR 🧩\"; \"\n⚠️ REVISIÓN MANUAL ⚠️\")}} \r\nCliente/Empresa: {{5.fromName}}\r\nProblema: {{7.resumen}}\r\nFecha y hora: {{5.internalDate}}\r\nCorreo: {{5.fromEmail}}\r\nAsunto:{{5.subject}}",
+        "parse": false,
+        "mrkdwn": true,
+        "channel": "#soporte",
+        "channelWType": "manualy"
+      },
+      "metadata": {
+        "designer": {
+          "x": 1200,
+          "y": 0
+        },
+        "restore": {
+          "expect": {
+            "parse": {
+              "mode": "chose"
+            },
+            "mrkdwn": {
+              "mode": "chose"
+            },
+            "link_names": {
+              "mode": "chose"
+            },
+            "channelWType": {
+              "label": "Enter manually"
+            },
+            "unfurl_links": {
+              "mode": "chose"
+            },
+            "unfurl_media": {
+              "mode": "chose"
+            },
+            "reply_broadcast": {
+              "mode": "chose"
+            }
+          },
+          "parameters": {}
+        },
+        "parameters": [
+          {
+            "name": "__IMTCONN__",
+            "type": "account:slack2,slack3",
+            "label": "Configurar conexión propia",
+            "required": true
+          }
+        ],
+        "expect": [
+          {
+            "name": "channelWType",
+            "type": "select",
+            "label": "Enter a channel ID or name",
+            "required": true,
+            "validate": {
+              "enum": [
+                "manualy",
+                "list"
+              ]
+            }
+          },
+          {
+            "name": "text",
+            "type": "text",
+            "label": "Text"
+          },
+          {
+            "name": "blocks",
+            "type": "text",
+            "label": "Blocks"
+          },
+          {
+            "name": "thread_ts",
+            "type": "text",
+            "label": "Thread message ID (time stamp)"
+          },
+          {
+            "name": "reply_broadcast",
+            "type": "boolean",
+            "label": "Reply broadcast"
+          },
+          {
+            "name": "link_names",
+            "type": "boolean",
+            "label": "Link names"
+          },
+          {
+            "name": "parse",
+            "type": "boolean",
+            "label": "Parse message text"
+          },
+          {
+            "name": "mrkdwn",
+            "type": "boolean",
+            "label": "Use markdown"
+          },
+          {
+            "name": "unfurl_links",
+            "type": "boolean",
+            "label": "Unfurl primarily text-based content"
+          },
+          {
+            "name": "unfurl_media",
+            "type": "boolean",
+            "label": "Unfurl media content"
+          },
+          {
+            "name": "icon_emoji",
+            "type": "text",
+            "label": "Icon emoji"
+          },
+          {
+            "name": "icon_url",
+            "type": "url",
+            "label": "Icon url"
+          },
+          {
+            "name": "username",
+            "type": "text",
+            "label": "User name"
+          },
+          {
+            "name": "channel",
+            "type": "text",
+            "label": "Channel ID or name",
+            "required": true
+          }
+        ]
+      }
+    }
+  ],
+  "metadata": {
+    "instant": false,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "slots": null,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false,
+      "freshVariables": false
+    },
+    "designer": {
+      "orphans": []
+    },
+    "zone": "us2.make.com",
+    "notes": []
+  }
+}
